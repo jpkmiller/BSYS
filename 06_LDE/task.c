@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 			usec += end.tv_usec - begin.tv_usec;
 		}
 
-		printf("average time %ld\n", usec / arg); //time measurement with gettimeofday()
+		printf("average time %ld in usec\n", usec / arg); //time measurement with gettimeofday()
 
 	} else if (strcmp(argv[1], "clock") == 0) {
 
