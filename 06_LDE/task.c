@@ -26,7 +26,7 @@ int main(int argc, char *argv[]) {
 
 		printf("average time %ld in usec\n", usec / arg); //time measurement with gettimeofday()
 
-	} else if (strcmp(argv[1], "clock") == 0) {
+	} else {
 
 		for (int i = 0; i < arg; i++) {
 			beginC = clock(); //use clock
