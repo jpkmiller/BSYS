@@ -9,15 +9,14 @@ int main(int argc, char *argv[]) {
 
 	int arg = atoi(argv[argc - 1]);
 	struct timeval begin, end;
-	clock_t beginC, endC;
-	long usec;
-	float csec;
+	struct timespec beginC, endC, resC;
+	long usec, csec;
 	
 	if (strcmp(argv[1], "gettime") == 0) {
 
 		for (int i = 0; i < arg; i++) {
 			gettimeofday(&begin, (struct timezone *) 0); //gettimeofday -> writes in struct
-			read(0, NULL, 0); //read 0-bytes from stdin
+			getpid(); //read 0-bytes from stdin
 			gettimeofday(&end, (struct timezone *) 0);
 			if (strcmp(argv[2],"-l") == 0)
 				printf("test-no. %d: %ld\n", i, end.tv_usec - begin.tv_usec);
@@ -28,16 +27,18 @@ int main(int argc, char *argv[]) {
 
 	} else {
 
+		clock_getres(CLOCK_REALTIME, &resC);
+		printf("resolution is: %ld\n\n", resC.tv_nsec);
 		for (int i = 0; i < arg; i++) {
-			beginC = clock(); //use clock
-			read(0, NULL, 0); //read 0-bytes from stdin
-			endC = clock();
+			clock_gettime(CLOCK_REALTIME, &beginC);
+			getpid();
+			clock_gettime(CLOCK_REALTIME, &endC);
+			printf("%ld\n", endC.tv_sec - beginC.tv_sec);
 			if (strcmp(argv[2], "-l") == 0)
-				printf("test-no. %d: %ld\n", i, endC - beginC);
-			csec += endC - beginC;
+				printf("test-no. %d: %ld\n", i, ((endC.tv_sec - beginC.tv_sec) * 1000000000) + endC.tv_nsec - beginC.tv_nsec);
+			csec += ((endC.tv_sec - beginC.tv_sec) * 1000000000) + endC.tv_nsec - beginC.tv_nsec;
 		}
-
-		printf("average time %f in sec | %f in usec\n", (csec / arg) / CLOCKS_PER_SEC, csec / arg);  //time measurement  with clock()
+		printf("average time %ld in sec | %ld in nsec\n", (csec / arg) / 1000000000, csec / arg);  //time measurement  with clock()
 
 	}
 }
