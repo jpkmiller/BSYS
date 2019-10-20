@@ -1,0 +1,15 @@
+Figure 8.2
+python .\mlfq-2.py --jlist 0,200,0 -q 10 -c
+
+One job running for 200ms, issuing no I/O and starting by 0. Using a timeslice of 10 ms
+
+
+
+Figure 8.6 
+python .\mlfq-2.py --jlist 1,200,8:0,20,1 -q 10 -S -i 1 -c
+
+-S flag invokes older Rules 4a and 4b, which means that if a job issues an
+I/O before completing its time slice, it will return to that same priority
+queue when it resumes execution, with its full time-slice intact.
+-q timeslice is set to 10ms -> Job 0 starts an I/O before finishing up its timeslice! => because of older rules 4a & b this process will stay the same priority.
+It games the scheduler
