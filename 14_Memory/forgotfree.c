@@ -6,4 +6,5 @@ int main(void) {
     char *string = malloc(11);
     string = "Hallihallo";
     printf("%s\n", string);
+    return 0;
 }
