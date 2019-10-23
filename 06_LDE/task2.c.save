@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 
 	int it = atoi(argv[argc - 1]);
 	
-    int PtoC[2],CtoP[2], child;
+    	int PtoC[2],CtoP[2], child;
 	pipe(PtoC);
 	pipe(CtoP);
 	unsigned long times[it];
@@ -32,36 +32,33 @@ int main(int argc, char *argv[]) {
 		sched_setaffinity(getpid(), sizeof(set), &set);
 
 		while(i < it) {
-            //writes start time in pipe Child to Parent
-          	clock_gettime(CLOCK_REALTIME, &end1C);
-        	mesEnd = (end1C.tv_sec * 1000000000) + end1C.tv_nsec;
-          	write(CtoP[1], &mesEnd, sizeof(unsigned long));
+            		//writes start time in pipe Child to Parent
+            		clock_gettime(CLOCK_REALTIME, &end1C);
+            		mesEnd = (end1C.tv_sec * 1000000000) + end1C.tv_nsec;
+           		write(CtoP[1], &mesEnd, sizeof(unsigned long));
 
 			//reads difference from pipe Parent to Child
 			read(PtoC[0], &mesDif, sizeof(unsigned long));
-            times[++i] = mesDif;
+            		times[++i] = mesDif;
 		}
-
-        for(size_t j = 0; j < (unsigned long) it; j++) {
-      		printf("%lu %lu\n", j, times[j]);
-      	}
-
-        printf("jump back to parent\n");
+        	for(size_t j = 0; j < sizeof(times) / sizeof(unsigned long); j++) {
+            		printf("%lu\n", times[j++]);
+        	}
 		exit(0);
-
 	} else {
-        unsigned long mesDif, mesEnd;
+        	unsigned long mesT, mes;
 
 		CPU_SET(0, &set);
 		sched_setaffinity(getpid(), sizeof(set), &set);
 
 		while (1) {
-            clock_gettime(CLOCK_REALTIME, &begin1C);
-      		read(CtoP[0], &mesEnd, sizeof(unsigned long)); //context switch to child process
-          	
-            mesDif = mesEnd - ((begin1C.tv_sec * 1000000000) + begin1C.tv_nsec);
-			write(PtoC[1], &mesDif, sizeof(unsigned long));
+          	  	clock_gettime(CLOCK_REALTIME, &begin1C);
+            		read(CtoP[0], &mesT, sizeof(unsigned long)); //context switch to child process
+            		mes = mesT - ((begin1C.tv_sec * 1000000000) + begin1C.tv_nsec);
+
+			write(PtoC[1], &mes, sizeof(unsigned long));
 		}
 	}
+    	wait(NULL);
 	return 0;
 }
