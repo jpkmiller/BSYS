@@ -14,6 +14,7 @@ int main(int argc, char *argv[]) {
     int PtoC[2]; //pipe parent to child
 	int CtoP[2]; //pipe child to parent
 	int child; //pid of child
+	int i = 0;
 	pipe(PtoC);
 	pipe(CtoP);
 
@@ -28,7 +29,7 @@ int main(int argc, char *argv[]) {
 	struct timespec end1C;
 	unsigned long times[it];
 
-
+	//precision
 	struct timespec start;
 	struct timespec stop;
 	clock_gettime(CLOCK_REALTIME, &start);
