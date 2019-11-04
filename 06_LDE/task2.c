@@ -10,26 +10,39 @@ int main(int argc, char *argv[]) {
 
 	int it = atoi(argv[argc - 1]);
 	
-    int PtoC[2],CtoP[2], child;
+	//pipe setup
+    int PtoC[2]; //pipe parent to child
+	int CtoP[2]; //pipe child to parent
+	int child; //pid of child
 	pipe(PtoC);
 	pipe(CtoP);
-	unsigned long times[it];
-	int i = -1;
 
+	//use only core 0
 	cpu_set_t set;
 	CPU_ZERO(&set);
+	CPU_SET(0, &set);
+	sched_setaffinity(getpid(), sizeof(set), &set);
 
-	struct timespec begin1C, end1C;
+	//time measuring
+	struct timespec begin1C; 
+	struct timespec end1C;
+	unsigned long times[it];
+
+
+	struct timespec start;
+	struct timespec stop;
+	clock_gettime(CLOCK_REALTIME, &start);
+	clock_gettime(CLOCK_REALTIME, &stop);
+	long precision = stop.tv_nsec - start.tv_nsec;
+
 
 	if ((child = fork()) < 0) {
-        	perror("fork");
+        //fork failed
+		perror("fork");
 		exit(1);
 
 	} else if (child == 0) {
 		unsigned long mesDif, mesEnd;
-
-		CPU_SET(0, &set);
-		sched_setaffinity(getpid(), sizeof(set), &set);
 
 		while(i < it) {
             //writes start time in pipe Child to Parent
@@ -42,6 +55,8 @@ int main(int argc, char *argv[]) {
             times[++i] = mesDif;
 		}
 
+
+
         for(size_t j = 0; j < (unsigned long) it; j++) {
       		printf("%lu %lu\n", j, times[j]);
       	}
@@ -51,9 +66,6 @@ int main(int argc, char *argv[]) {
 
 	} else {
         unsigned long mesDif, mesEnd;
-
-		CPU_SET(0, &set);
-		sched_setaffinity(getpid(), sizeof(set), &set);
 
 		while (1) {
             clock_gettime(CLOCK_REALTIME, &begin1C);
