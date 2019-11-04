@@ -35,6 +35,7 @@ int main(int argc, char *argv[]) {
 	clock_gettime(CLOCK_REALTIME, &start);
 	clock_gettime(CLOCK_REALTIME, &stop);
 	long precision = stop.tv_nsec - start.tv_nsec;
+	printf("%ld\n", precision);
 
 
 	if ((child = fork()) < 0) {
@@ -45,7 +46,7 @@ int main(int argc, char *argv[]) {
 	} else if (child == 0) {
 		unsigned long mesDif, mesEnd;
 
-		while(i < it) {
+		while (i < it) {
             //writes start time in pipe Child to Parent
           	clock_gettime(CLOCK_REALTIME, &end1C);
         	mesEnd = (end1C.tv_sec * 1000000000) + end1C.tv_nsec;
@@ -56,14 +57,11 @@ int main(int argc, char *argv[]) {
             times[++i] = mesDif;
 		}
 
-
-
         for(size_t j = 0; j < (unsigned long) it; j++) {
       		printf("%lu %lu\n", j, times[j]);
       	}
 
         printf("jump back to parent\n");
-		exit(0);
 
 	} else {
         unsigned long mesDif, mesEnd;
@@ -75,6 +73,7 @@ int main(int argc, char *argv[]) {
             mesDif = mesEnd - ((begin1C.tv_sec * 1000000000) + begin1C.tv_nsec);
 			write(PtoC[1], &mesDif, sizeof(unsigned long));
 		}
+		wait(NULL);
 	}
 	return 0;
 }
