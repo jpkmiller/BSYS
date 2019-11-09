@@ -6,9 +6,17 @@
 #include <sys/wait.h>
 #include <time.h>
 
-int main(int argc, char *argv[]) {
+int comp (const void * elem1, const void * elem2) 
+{
+    int f = *((int*)elem1);
+    int s = *((int*)elem2);
+    if (f > s) return  1;
+    if (f < s) return -1;
+    return 0;
+}
 
-	int it = atoi(argv[argc - 1]);
+
+int main(int argc, char *argv[]) {
 	
 	//pipe setup
     int PtoC[2]; //pipe parent to child
@@ -17,6 +25,7 @@ int main(int argc, char *argv[]) {
 	int i = 0;
 	pipe(PtoC);
 	pipe(CtoP);
+    char buf = 'j'; //buffer
 
 	//use only core 0
 	cpu_set_t set;
@@ -25,9 +34,8 @@ int main(int argc, char *argv[]) {
 	sched_setaffinity(getpid(), sizeof(set), &set);
 
 	//time measuring
-	struct timespec begin1C; 
-	struct timespec end1C;
-	unsigned long times[it];
+	struct timespec beginC;
+	struct timespec endC;
 
 	//precision
 	struct timespec start;
@@ -35,8 +43,10 @@ int main(int argc, char *argv[]) {
 	clock_gettime(CLOCK_REALTIME, &start);
 	clock_gettime(CLOCK_REALTIME, &stop);
 	long precision = stop.tv_nsec - start.tv_nsec;
-	printf("%ld\n", precision);
 
+    printf("%ld\n", precision);
+	int it = atoi(argv[argc - 1]) * precision;
+    unsigned long times[it];
 
 	if ((child = fork()) < 0) {
         //fork failed
@@ -44,36 +54,46 @@ int main(int argc, char *argv[]) {
 		exit(1);
 
 	} else if (child == 0) {
-		unsigned long mesDif, mesEnd;
-
-		while (i < it) {
-            //writes start time in pipe Child to Parent
-          	clock_gettime(CLOCK_REALTIME, &end1C);
-        	mesEnd = (end1C.tv_sec * 1000000000) + end1C.tv_nsec;
-          	write(CtoP[1], &mesEnd, sizeof(unsigned long));
-
-			//reads difference from pipe Parent to Child
-			read(PtoC[0], &mesDif, sizeof(unsigned long));
-            times[++i] = mesDif;
-		}
-
-        for(size_t j = 0; j < (unsigned long) it; j++) {
-      		printf("%lu %lu\n", j, times[j]);
-      	}
-
-        printf("jump back to parent\n");
+        
+        while (1) {
+            read(PtoC[0], &buf, 1);
+            write(CtoP[1], &buf, 1);        
+        }
 
 	} else {
-        unsigned long mesDif, mesEnd;
+        unsigned long mesD; //end - begin in nanosec
 
-		while (1) {
-            clock_gettime(CLOCK_REALTIME, &begin1C);
-      		read(CtoP[0], &mesEnd, sizeof(unsigned long)); //context switch to child process
-          	
-            mesDif = mesEnd - ((begin1C.tv_sec * 1000000000) + begin1C.tv_nsec);
-			write(PtoC[1], &mesDif, sizeof(unsigned long));
+        while (i < it) {
+            clock_gettime(CLOCK_REALTIME, &beginC);
+            write(PtoC[1], &buf, 1); //write in parent to child pipe      		
+            read(CtoP[0], &buf, 1); //context switch to child process
+          	clock_gettime(CLOCK_REALTIME, &endC);
+            
+            mesD = ((((endC.tv_sec - beginC.tv_sec) * 1000000000) + endC.tv_nsec - beginC.tv_nsec) / 2); //2 context switches
+            times[i++] = mesD;
+            printf("%lu\r", mesD);
 		}
-		wait(NULL);
+
+
+        printf("\r"); //cr
+
+        //time measurement
+        unsigned long long mes = 0;
+
+        //sorting array
+        qsort (times, sizeof(times)/sizeof(*times), sizeof(*times), comp);
+    
+        //counting all times together -> leaving out the smallest and highest time
+        printf("Sorting:\n");
+        wait(1);   
+        for(size_t j = 1; j < (unsigned long) i - 1; j++) {
+            printf("%lu\r", times[j]);
+      		mes += times[j];
+      	}
+        
+        //printing final time and killing child
+        printf("\rTime for context switch: %llu\n", mes / (i - 2));
+        kill(child, SIGKILL);
 	}
 	return 0;
 }
