@@ -1,0 +1,9 @@
+import subprocess
+print "start"
+
+
+
+for x in xrange(0, 3000,50):
+
+ 	print(x,subprocess.call(["./tlb_mes", str(x+1), "100"])
+
