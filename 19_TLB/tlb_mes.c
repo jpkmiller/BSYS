@@ -49,7 +49,7 @@ int meassurement(int NUMPAGES, int NUMTRIALS, int jump){
 	  	precision += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
 	}
 	precision /= precisionFaktor;
-	printf("precision: %ld\n", precision);
+	//printf("precision: %ld\n", precision);
 
 	int *a = (int*) calloc(NUMPAGES * jump, sizeof(int));
 	if(a == NULL){
@@ -74,7 +74,7 @@ int meassurement(int NUMPAGES, int NUMTRIALS, int jump){
 	  	clock_gettime(CLOCK_REALTIME, &end);
 	  	times[i] = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
 		sum += times[i];
-		printf("%d -> %d\n", i, times[i]);
+	//	printf("%d -> %d\n", i, times[i]);
 		}
 	}
 
