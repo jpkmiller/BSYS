@@ -6,6 +6,7 @@
 #include <sched.h>
 #include <unistd.h>
 
+int meassurement(int,int,int);
 
 int main(int argc, char *argv[]) {
 
@@ -19,49 +20,65 @@ int main(int argc, char *argv[]) {
 	CPU_SET(0, &set);
 	sched_setaffinity(getpid(), sizeof(set), &set);
 
-	int PAGESITE = getpagesize();
+	int PAGESIZE = getpagesize();
 	int NUMPAGES = atoi(argv[1]);
-	int NUMTRIALS = argv[2];
-
-	struct timespec begin;
-	struct timespec end;
-
-	long long unsigned precision;
-
-	for (int i = 0; i < 100000; i++) {
-		clock_gettime(CLOCK_REALTIME, &begin);
-		clock_gettime(CLOCK_REALTIME, &end);
-		precision += (end.tv_sec - begin.tv_sec) * 1000000000 + end.tv_nsec - begin.tv_nsec;
-	}
-	precision /= 100000;
-	printf("%lld\n", precision);
-
-	/*
-	   int timediff[4096];
-	   int *a = (int*) malloc(4096 * sizeof(int));
-	   for (int i = 0; i < 4096; i++) {
-	   clock_gettime(CLOCK_REALTIME, &begin);
-	   a[i] += 1;
-	   clock_gettime(CLOCK_REALTIME, &end);
-	   timediff[i] = (end.tv_sec - begin.tv_sec) * 1000000000 + (end.tv_nsec - begin.tv_nsec) - precision;
-	   printf("%d -> %d\n", i, timediff[i]);  
-	   } */
-
-
-
+	int NUMTRIALS = atoi(argv[2]);
 	int jump = PAGESIZE / sizeof(int); //1024
-	int a[NUMPAGES * jump]; //num of pages * 1024
 
-	for (int j = NUMTRIALS; j < NUMTRAILS; j++)
-	{
-		for (int i = 0; i < NUMPAGES * jump; i += jump)
-		{
-			a[i] += 1;
-		}
-	}
 
-	
+
+	int time = meassurement(NUMPAGES, NUMTRIALS, jump);
+
+	printf("diff: %d\n", time);
 
 	return 0;
 }
 
+int meassurement(int NUMPAGES, int NUMTRIALS, int jump){
+
+
+	struct timespec start,end;
+
+	unsigned long precision = 0;
+	unsigned int precisionFaktor = 10000000;
+
+
+	for (unsigned int i = 0; i < precisionFaktor; i++){
+	  	clock_gettime(CLOCK_REALTIME, &start);
+	  	clock_gettime(CLOCK_REALTIME, &end);
+	  	precision += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
+	}
+	precision /= precisionFaktor;
+	printf("precision: %ld\n", precision);
+
+	int *a = (int*) calloc(NUMPAGES * jump, sizeof(int));
+	if(a == NULL){
+		perror("Alloc failed a");
+	}
+	int *times = (int*) calloc(NUMPAGES * jump, sizeof(int));
+	if(times == NULL){
+		perror("Alloc failed a");
+		free(a);
+	}
+
+
+	unsigned long sum = 0;
+
+
+	for (int j = 0; j < NUMTRIALS; j++)
+	{
+		for (int i = 0; i < NUMPAGES * jump; i += jump)
+		{
+	  	clock_gettime(CLOCK_REALTIME, &start);
+	   	a[i] += 1;
+	  	clock_gettime(CLOCK_REALTIME, &end);
+	  	times[i] = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
+		sum += times[i];
+		printf("%d -> %d\n", i, times[i]);
+		}
+	}
+
+	free(times);
+	free(a);
+	return sum / (NUMPAGES * NUMTRIALS); 
+}
