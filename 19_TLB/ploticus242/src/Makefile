@@ -91,16 +91,16 @@ NOX11 = -DNOX11
 
 
 ########### Option 1: use bundled GD16 (PNG only).  Requires libpng and zlib.
-exetarget: plpng 
-GD16LIBS = -lpng -lz
-GD16H =  -I/usr/local/include
-ZFLAG = -DWZ
+#exetarget: plpng 
+#GD16LIBS = -lpng -lz
+#GD16H =  -I/usr/local/include
+#ZFLAG = -DWZ
 ### These should remain commented unless your libs are not in usual places, then alter to suit...
 ### GD16LIBS = /home/scg/lib/libpng.a /home/scg/lib/libz.a
 ### GD16H = -I/home/scg/lib
 
 ########### Option 2: use bundled GD13 (GIF only). No additional lib dependencies.
-# exetarget: pl 
+ exetarget: pl 
 
 ########### Option 3: use your own GD resource.  Requires GD 1.84+, libpng, zlib, libjpeg
 # exetarget: plgd18 
