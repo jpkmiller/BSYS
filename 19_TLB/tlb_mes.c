@@ -6,7 +6,7 @@
 #include <sched.h>
 #include <unistd.h>
 
-int meassurement(int,int,int);
+int meassurement(unsigned int, unsigned int, unsigned int);
 
 int main(int argc, char *argv[]) {
 
@@ -20,10 +20,10 @@ int main(int argc, char *argv[]) {
 	CPU_SET(0, &set);
 	sched_setaffinity(getpid(), sizeof(set), &set);
 
-	int PAGESIZE = getpagesize();
-	int NUMPAGES = atoi(argv[1]);
-	int NUMTRIALS = atoi(argv[2]);
-	int jump = PAGESIZE / sizeof(int); //1024
+	unsigned int PAGESIZE = getpagesize();
+	unsigned int NUMPAGES = atoi(argv[1]);
+	unsigned int NUMTRIALS = atoi(argv[2]);
+	unsigned int jump = PAGESIZE / sizeof(int); //1024
 
 
 
@@ -34,11 +34,11 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
-int meassurement(int NUMPAGES, int NUMTRIALS, int jump){
+int meassurement(unsigned int NUMPAGES, unsigned int NUMTRIALS, unsigned int jump){
 
 
 	struct timespec start,end;
-
+	struct timespec forStart;
 	unsigned long precision = 0;
 	unsigned int precisionFaktor = 10000000;
 
@@ -49,36 +49,28 @@ int meassurement(int NUMPAGES, int NUMTRIALS, int jump){
 	  	precision += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
 	}
 	precision /= precisionFaktor;
-	//printf("precision: %ld\n", precision);
 
-	int *a = (int*) calloc(NUMPAGES * jump, sizeof(int));
+	unsigned long long *a = (unsigned long long *) calloc(NUMPAGES * jump, sizeof(unsigned long long));
 	if(a == NULL){
 		perror("Alloc failed a");
 	}
-	int *times = (int*) calloc(NUMPAGES * jump, sizeof(int));
-	if(times == NULL){
-		perror("Alloc failed a");
-		free(a);
-	}
-
 
 	unsigned long sum = 0;
 
 
-	for (int j = 0; j < NUMTRIALS; j++)
+	for (unsigned int j = 0; j < NUMTRIALS; j++)
 	{
-		for (int i = 0; i < NUMPAGES * jump; i += jump)
+		for (unsigned int i = 0; i < NUMPAGES * jump; i += jump)
 		{
 	  	clock_gettime(CLOCK_REALTIME, &start);
 	   	a[i] += 1;
 	  	clock_gettime(CLOCK_REALTIME, &end);
-	  	times[i] = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
-		sum += times[i];
+	  	sum += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
+
 	//	printf("%d -> %d\n", i, times[i]);
 		}
 	}
 
-	free(times);
 	free(a);
 	return sum / (NUMPAGES * NUMTRIALS); 
 }
