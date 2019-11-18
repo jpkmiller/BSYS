@@ -29,7 +29,7 @@ int main(int argc, char *argv[]) {
 
 	int time = meassurement(NUMPAGES, NUMTRIALS, jump);
 
-	printf("diff: %d\n", time);
+	printf("%d %d\n", NUMPAGES, time);
 
 	return 0;
 }
