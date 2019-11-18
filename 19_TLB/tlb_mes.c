@@ -27,31 +27,35 @@ int main(int argc, char *argv[]) {
 
 	long long unsigned precision;
 
-	for (int i = 0; i < NUMTRIALS; i++) {
-		clock_gettime(CLOCK_REALTIME, &begin);
-		clock_gettime(CLOCK_REALTIME, &end);
-		precision += (end.tv_sec - begin.tv_sec) * 1000000000 + end.tv_nsec - begin.tv_nsec;
-	}
-	precision /= NUMTRIALS;
-	printf("%llu\n", precision);
-
-
 	int jump = PAGESIZE / sizeof(int); //1024
-	int a[NUMPAGES * jump]; //num of pages * 1024
+	int *a = calloc(NUMPAGES * jump, sizeof(int)); //num of pages * 1024
 	long long unsigned diff;
 
+	//precision
+	clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
 	for (int j = 0; j < NUMTRIALS; j++)
 	{
-		clock_gettime(CLOCK_REALTIME,&begin);
+		for (int i = 0; i < NUMPAGES * jump; i += jump)
+		{
+		}
+	}
+	clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+	precision = ((end.tv_sec - begin.tv_sec) * 1000000000 + end.tv_nsec - begin.tv_nsec);
+
+	//measurement
+	clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+	for (int j = 0; j < NUMTRIALS; j++)
+	{
 		for (int i = 0; i < NUMPAGES * jump; i += jump)
 		{
 			a[i] += 1;
 		}
-		clock_gettime(CLOCK_REALTIME,&end);
-		diff += (((end.tv_sec - begin.tv_sec) * 1000000000 + (end.tv_nsec - begin.tv_nsec))/ NUMPAGES);
 	}
-	diff /= NUMTRIALS;
-	printf("\n%d -> %llu (prec: %llu, pagesize %d)", NUMPAGES, diff, precision, PAGESIZE);
+	clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+
+	diff = (((end.tv_sec -begin.tv_sec) * 1000000000 + (end.tv_nsec - begin.tv_nsec) - precision) / NUMPAGES )/ NUMTRIALS;
+	printf("num-p: %d -> time: %llu (prec: %llu, pagesize %d)\n", NUMPAGES, diff, (precision / NUMPAGES) / NUMTRIALS, PAGESIZE);
+
 	return 0;
 }
 
