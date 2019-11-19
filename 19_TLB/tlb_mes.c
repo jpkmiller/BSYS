@@ -1,4 +1,5 @@
 #define _GNU_SOURCE
+#define _CLOCK_ CLOCK_MONOTONIC_RAW
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -43,12 +44,17 @@ int meassurement(unsigned int NUMPAGES, unsigned int NUMTRIALS, unsigned int jum
 	unsigned int precisionFaktor = 10000000;
 
 
-	for (unsigned int i = 0; i < precisionFaktor; i++){
-	  	clock_gettime(CLOCK_REALTIME, &start);
-	  	clock_gettime(CLOCK_REALTIME, &end);
-	  	precision += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
+  	clock_gettime(_CLOCK_, &start);
+	for (unsigned int j = 0; j < NUMTRIALS; j++)
+	{
+		for (unsigned int i = 0; i < NUMPAGES * jump; i += jump)
+		{
+		}
 	}
-	precision /= precisionFaktor;
+  	clock_gettime(_CLOCK_, &end);
+
+
+  	precision = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
 
 	unsigned long long *a = (unsigned long long *) calloc(NUMPAGES * jump, sizeof(unsigned long long));
 	if(a == NULL){
@@ -57,20 +63,21 @@ int meassurement(unsigned int NUMPAGES, unsigned int NUMTRIALS, unsigned int jum
 
 	unsigned long sum = 0;
 
+  	clock_gettime(_CLOCK_, &start);
 
 	for (unsigned int j = 0; j < NUMTRIALS; j++)
 	{
 		for (unsigned int i = 0; i < NUMPAGES * jump; i += jump)
 		{
-	  	clock_gettime(CLOCK_REALTIME, &start);
 	   	a[i] += 1;
-	  	clock_gettime(CLOCK_REALTIME, &end);
-	  	sum += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
 
 	//	printf("%d -> %d\n", i, times[i]);
 		}
 	}
+  	clock_gettime(_CLOCK_, &end);
+
+  	sum = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - precision;
 
 	free(a);
-	return sum / (NUMPAGES * NUMTRIALS); 
+	return sum / (NUMPAGES * NUMTRIALS);
 }
