@@ -1,3 +1,4 @@
+#define _CLOCK_ CLOCK_MONOTONIC_RAW
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,7 +16,7 @@ int main(int argc, char *argv[]) {
 
 	cpu_set_t set;
 	CPU_ZERO(&set);
-	CPU_SET(0, &set);
+	CPU_SET(2, &set);
 	sched_setaffinity(getpid(), sizeof(set), &set);
 
 	int PAGESIZE = getpagesize();
@@ -25,25 +26,28 @@ int main(int argc, char *argv[]) {
 	struct timespec begin;
 	struct timespec end;
 
-	long long unsigned precision;
+	long unsigned precision;
 
 	int jump = PAGESIZE / sizeof(int); //1024
 	int *a = calloc(NUMPAGES * jump, sizeof(int)); //num of pages * 1024
 	long long unsigned diff;
 
 	//precision
-	clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+
+	clock_gettime(_CLOCK_, &begin);
 	for (int j = 0; j < NUMTRIALS; j++)
 	{
 		for (int i = 0; i < NUMPAGES * jump; i += jump)
 		{
 		}
 	}
-	clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+	clock_gettime(_CLOCK_, &end);
 	precision = ((end.tv_sec - begin.tv_sec) * 1000000000 + end.tv_nsec - begin.tv_nsec);
 
 	//measurement
-	clock_gettime(CLOCK_MONOTONIC_RAW, &begin);
+
+
+	clock_gettime(_CLOCK_, &begin);
 	for (int j = 0; j < NUMTRIALS; j++)
 	{
 		for (int i = 0; i < NUMPAGES * jump; i += jump)
@@ -51,11 +55,11 @@ int main(int argc, char *argv[]) {
 			a[i] += 1;
 		}
 	}
-	clock_gettime(CLOCK_MONOTONIC_RAW, &end);
+	clock_gettime(_CLOCK_, &end);
 
 	diff = (((end.tv_sec -begin.tv_sec) * 1000000000 + (end.tv_nsec - begin.tv_nsec) - precision) / NUMPAGES )/ NUMTRIALS;
-	printf("num-p: %d -> time: %llu (prec: %llu, pagesize %d)\n", NUMPAGES, diff, (precision / NUMPAGES) / NUMTRIALS, PAGESIZE);
-
+	printf("num-p: %d -> time: %llu (prec: %lu, pagesize %d)\n", NUMPAGES, diff, precision / NUMPAGES / NUMTRIALS, PAGESIZE);
+	free(a);
 	return 0;
 }
 
