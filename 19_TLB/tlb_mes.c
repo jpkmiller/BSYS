@@ -38,7 +38,7 @@ int meassurement(unsigned int NUMPAGES, unsigned int NUMTRIALS, unsigned int jum
 
 
 	struct timespec start,end;
-	struct timespec forStart;
+//	struct timespec forStart;
 	unsigned long precision = 0;
 	unsigned int precisionFaktor = 10000000;
 
