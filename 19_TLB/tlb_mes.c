@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
 	clock_gettime(_CLOCK_, &end);
 
 	diff = (((end.tv_sec -begin.tv_sec) * 1000000000 + (end.tv_nsec - begin.tv_nsec) - precision) / NUMPAGES )/ NUMTRIALS;
-	printf("num-p: %d -> time: %llu (prec: %lu, pagesize %d)\n", NUMPAGES, diff, precision / NUMPAGES / NUMTRIALS, PAGESIZE);
+	//printf("num-p: %d -> time: %llu (prec: %lu, pagesize %d)\n", NUMPAGES, diff, precision / NUMPAGES / NUMTRIALS, PAGESIZE);
+	printf("%d %llu\n", NUMPAGES, diff);
 	free(a);
 	return 0;
 }
