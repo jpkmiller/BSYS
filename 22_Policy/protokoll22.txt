@@ -129,3 +129,64 @@ Access: 6  Miss Left 9 0 6	Right
 Access: 3  Miss Left 9 6 3	Right
 Access: 6  Hit	Left 9 6 3	Right
 Access: 6  Hit	Left 9 6 3	Right
+
+-----------------------------------------------------------------------
+
+No. 2
+
+ARG addressfile
+ARG numaddrs 10
+ARG policy FIFO
+ARG clockbits 2
+ARG cachesize 5
+ARG maxpage 10
+ARG seed 0
+ARG notrace False
+
+python paging-policy.py -p FIFO -C 5 -a 1,2,3,4,5
+ARG addresses 1,2,3,4,5
+
+Solving...
+
+Access: 1  MISS FirstIn ->          [1] <- Lastin  Replaced:- [Hits:0 Misses:1]
+Access: 2  MISS FirstIn ->       [1, 2] <- Lastin  Replaced:- [Hits:0 Misses:2]
+Access: 3  MISS FirstIn ->    [1, 2, 3] <- Lastin  Replaced:- [Hits:0 Misses:3]
+Access: 4  MISS FirstIn -> [1, 2, 3, 4] <- Lastin  Replaced:- [Hits:0 Misses:4]
+Access: 5  MISS FirstIn -> [1, 2, 3, 4, 5] <- Lastin  Replaced:- [Hits:0 Misses:5]
+
+
+
+python paging-policy.py -p LRU -C 5 -a 1,2,3,4,5,6,1,2,3,4,5
+ARG addresses 1,2,3,4,5,6,1,2,3,4,5
+
+Access: 1  MISS LRU ->          [1] <- MRU Replaced:- [Hits:0 Misses:1]
+Access: 2  MISS LRU ->       [1, 2] <- MRU Replaced:- [Hits:0 Misses:2]
+Access: 3  MISS LRU ->    [1, 2, 3] <- MRU Replaced:- [Hits:0 Misses:3]
+Access: 4  MISS LRU -> [1, 2, 3, 4] <- MRU Replaced:- [Hits:0 Misses:4]
+Access: 5  MISS LRU -> [1, 2, 3, 4, 5] <- MRU Replaced:- [Hits:0 Misses:5]
+Access: 6  MISS LRU -> [2, 3, 4, 5, 6] <- MRU Replaced:1 [Hits:0 Misses:6]
+Access: 1  MISS LRU -> [3, 4, 5, 6, 1] <- MRU Replaced:2 [Hits:0 Misses:7]
+Access: 2  MISS LRU -> [4, 5, 6, 1, 2] <- MRU Replaced:3 [Hits:0 Misses:8]
+Access: 3  MISS LRU -> [5, 6, 1, 2, 3] <- MRU Replaced:4 [Hits:0 Misses:9]
+Access: 4  MISS LRU -> [6, 1, 2, 3, 4] <- MRU Replaced:5 [Hits:0 Misses:10]
+Access: 5  MISS LRU -> [1, 2, 3, 4, 5] <- MRU Replaced:6 [Hits:0 Misses:11]
+
+FINALSTATS hits 0   misses 11   hitrate 0.00
+
+python paging-policy.py -p MRU -C 5 -a 1,2,3,4,5,6,7,8,9          
+ARG addresses 1,2,3,4,5,6,7,8,9
+
+
+Access: 1  MISS LRU ->          [1] <- MRU Replaced:- [Hits:0 Misses:1]
+Access: 2  MISS LRU ->       [1, 2] <- MRU Replaced:- [Hits:0 Misses:2]
+Access: 3  MISS LRU ->    [1, 2, 3] <- MRU Replaced:- [Hits:0 Misses:3]
+Access: 4  MISS LRU -> [1, 2, 3, 4] <- MRU Replaced:- [Hits:0 Misses:4]
+Access: 5  MISS LRU -> [1, 2, 3, 4, 5] <- MRU Replaced:- [Hits:0 Misses:5]
+Access: 6  MISS LRU -> [1, 2, 3, 4, 6] <- MRU Replaced:5 [Hits:0 Misses:6]
+Access: 7  MISS LRU -> [1, 2, 3, 4, 7] <- MRU Replaced:6 [Hits:0 Misses:7]
+Access: 8  MISS LRU -> [1, 2, 3, 4, 8] <- MRU Replaced:7 [Hits:0 Misses:8]
+Access: 9  MISS LRU -> [1, 2, 3, 4, 9] <- MRU Replaced:8 [Hits:0 Misses:9]
+
+FINALSTATS hits 0   misses 9   hitrate 0.00
+
+
