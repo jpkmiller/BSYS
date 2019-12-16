@@ -1,1 +1,1 @@
-To run bucket.c be sure to include the object
+To run bucket.c be sure to include the object when compiling
