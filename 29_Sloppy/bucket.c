@@ -3,6 +3,9 @@
 #include "linked_list.h"
 #include <stdlib.h>
 #include <pthread.h>
+#include <time.h>
+
+int max 10000000;
 
 typedef struct __hash_t {
 	list_t lists[BUCKETS];
@@ -32,11 +35,30 @@ int Hash_Lookup(hash_t *H, int key) {
 
 void *Hash_Repeat(void *arg) {
 	hash_arg *args = (hash_arg *) arg;
-	for (int i = 0;; i++) {
+	for (int i = 0; i < max; i++) {
 		Hash_Insert(args->H, i);
 		printf("%d put %d\n", args->tid, i);
 		pthread_yield();
 	}
+}
+
+unsigned long getPrecision(void){
+
+
+	struct timespec start,end;
+
+	unsigned long precision = 0;
+	unsigned int precisionFaktor = 10000000;
+
+	for (unsigned int i = 0; i < precisionFaktor; i++){
+	  	clock_gettime(CLOCK_REALTIME, &start);
+	  	clock_gettime(CLOCK_REALTIME, &end);
+	  	precision += (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec);
+	}
+	precision /= precisionFaktor;
+	//printf("precision: %ld\n", precision);
+
+	return precision; 
 }
 
 int main(void) {
@@ -49,7 +71,7 @@ int main(void) {
 	hash_arg a3 = {2, h};
 	hash_arg a4 = {3, h};
 
-
+	struct timespec start, end;
 
 	pthread_create(&p1, NULL, Hash_Repeat, &a1);
 	pthread_create(&p2, NULL, Hash_Repeat, &a2);
@@ -64,5 +86,11 @@ int main(void) {
 		}
 		pthread_yield();
 	}
+
+	pthread_join(p1, NULL);
+	pthread_join(p2, NULL);
+	pthread_join(p3, NULL);
+	pthread_join(p4, NULL);
+
 	return 0;
 }
