@@ -5,7 +5,7 @@
 #include <pthread.h>
 #include <time.h>
 
-int max = 10000000;
+int max = 10;
 
 typedef struct __hash_t {
 	list_t lists[BUCKETS];
@@ -95,6 +95,15 @@ int main(void) {
 	pthread_join(p4, NULL);
 
 	clock_gettime(CLOCK_REALTIME, &end);
+
+	for (int i = 0; i < max; i++) {
+                if (Hash_Lookup(h, i) == 0) {
+                        printf("found %d\n", i);
+                } else {
+                        printf("not found %d\n", i);
+                }
+	}
+
 
 	long long unsigned zeit = (end.tv_sec - start.tv_sec) * 1000000000 + (end.tv_nsec - start.tv_nsec) - getPrecision();
 

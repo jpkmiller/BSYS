@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,16 +30,16 @@ void do_fill(int value) {
 int do_get() {
     int tmp = buffer[use_ptr];
     ensure(tmp != EMPTY, "error: tried to get an empty buffer");
-    buffer[use_ptr] = EMPTY; 
+    buffer[use_ptr] = EMPTY;
     use_ptr = (use_ptr + 1) % max;
     num_full--;
     return tmp;
 }
 
 void *producer(void *arg) {
-    int id = (int) arg;
+    uintptr_t id = (uintptr_t) arg;
     // make sure each producer produces unique values
-    int base = id * loops; 
+    int base = id * loops;
     int i;
     for (i = 0; i < loops; i++) {   p0;
 	Mutex_lock(&m);             p1;
@@ -53,7 +54,7 @@ void *producer(void *arg) {
 }
                                                                                
 void *consumer(void *arg) {
-    int id = (int) arg;
+    uintptr_t id = (uintptr_t) arg;
     int tmp = 0;
     int consumed_count = 0;
     while (tmp != END_OF_STREAM) { c0;
