@@ -119,3 +119,17 @@ it will be worse than others because it can't perform in parallel
 
 _Finally, let’s look at vector-nolock.c. This version doesn’t use locks at all; does it provide the exact same semantics as the other versions? Why or why not?_
 
+it does not because there is no lock at all. Instead it uses a atomic instruction (all in one) to update the vector
+
+~~~c
+asm volatile("lock; xaddl %%eax, %2;"
+                 :"=a" (value)
+                 :"a" (value), "m" (*variable)
+                 :"memory");
+
+...
+
+for (i = 0; i < VECTOR_SIZE; i++) {
+    fetch_and_add(&v_dst->values[i], v_src->values[i]);
+}
+~~~
