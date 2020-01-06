@@ -1,3 +1,5 @@
+[TOC]
+
 ## 1
 
 _How does the output change from run to run?_
@@ -8,6 +10,7 @@ _How does the output change from run to run?_
 <-add(0, 1)
               ->add(0, 1)
               <-add(0, 1)
+
 
 ./vector-deadlock -n 2 -l 1 -v
               ->add(0, 1)
@@ -25,6 +28,7 @@ _Now add the -d flag, and change the number of loops (-l) from 1 to higher numbe
 The code deadlocks quite often when executing without verbose
 
 ./vector-deadlock -n 2 -l 100 -d
+
 ./vector-deadlock -n 2 -l 1000 -d
 
 ## 3
@@ -68,8 +72,30 @@ After running: it takes about half the time
 
 _Now let’s study vector-try-wait.c. First make sure you understand the code. Is the first call to pthread mutex trylock() really needed?_
 
+~~~c
+top:
+    if (pthread_mutex_trylock(&v_dst->lock) != 0) {
+        goto top;
+    }
 
+    if (pthread_mutex_trylock(&v_src->lock) != 0) {
+        retry++;
+        Pthread_mutex_unlock(&v_dst->lock);
+        goto top;
+    }
+
+~~~
+
+when the dst lock could not be acquired it returns to the top.
+when the src lock could not be acquired it releases the dst lock,
+updates a retry counter and returns to the top
 
 _Now run the code. How fast does it run compared to the global order approach? How does the number of retries, as counted by the code, change as the number of threads increases?_
 
+./vector-global-order -t -n 2 -l 10000000
+Time: 13.13 seconds
+
+./vector-try-wait -n 2 -l 10000000 -t
+Retries: 78169
+Time: 6.66 seconds
 
