@@ -20,7 +20,7 @@ typedef struct __args_u {
 void init(counter_t *c, int threshold) {
 	c -> threshold = threshold;
 	c -> global = 0;
-    printf("init\n", c -> global);
+	printf("init\n", c -> global);
 
 	pthread_mutex_init(&c -> glock, NULL);
 	for (int i = 0; i < NUMCPUS; i++) {
@@ -44,7 +44,7 @@ void update(void *arg) {
 		pthread_mutex_unlock(&c -> glock);
 		c -> local[cpu] = 0;
 	}
-    pthread_mutex_unlock(&c->llock[cpu]);
+   	pthread_mutex_unlock(&c->llock[cpu]);
 }
 
 void *repeat(void *arg) {
@@ -63,14 +63,14 @@ int get(counter_t *c) {
 int main(void) {
 	pthread_t p1, p2, p3, p4;
 	counter_t *c1 = (counter_t *) malloc(sizeof(counter_t));
-    counter_t *c2 = (counter_t *) malloc(sizeof(counter_t));
-    counter_t *c3 = (counter_t *) malloc(sizeof(counter_t));
-    counter_t *c4 = (counter_t *) malloc(sizeof(counter_t));
+    	counter_t *c2 = (counter_t *) malloc(sizeof(counter_t));
+    	counter_t *c3 = (counter_t *) malloc(sizeof(counter_t));
+    	counter_t *c4 = (counter_t *) malloc(sizeof(counter_t));
 
-	init(c1, 1);
-    init(c2, 1); 
-    init(c3, 1); 
-    init(c4, 1);
+	init(c1, 5);
+    	init(c2, 5);
+    	init(c3, 5);
+    	init(c4, 5);
 
 	args_u u1 = { c1, 0, 1 };
 	args_u u2 = { c2, 1, 1 };
