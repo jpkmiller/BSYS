@@ -1,10 +1,8 @@
-[TOC]
-
 ## 1
 
 _How does the output change from run to run?_
 
-
+~~~
 ./vector-deadlock -n 2 -l 1 -v
 ->add(0, 1)
 <-add(0, 1)
@@ -18,6 +16,7 @@ _How does the output change from run to run?_
 ->add(0, 1)
 <-add(0, 1)
 
+~~~
 Orders differ in which the threads run
 
 
@@ -27,9 +26,11 @@ _Now add the -d flag, and change the number of loops (-l) from 1 to higher numbe
 
 The code deadlocks quite often when executing without verbose
 
+~~~
 ./vector-deadlock -n 2 -l 100 -d
 
 ./vector-deadlock -n 2 -l 1000 -d
+~~~
 
 ## 3
 
@@ -92,10 +93,29 @@ updates a retry counter and returns to the top
 
 _Now run the code. How fast does it run compared to the global order approach? How does the number of retries, as counted by the code, change as the number of threads increases?_
 
+~~~
 ./vector-global-order -t -n 2 -l 10000000
 Time: 13.13 seconds
 
 ./vector-try-wait -n 2 -l 10000000 -t
 Retries: 78169
 Time: 6.66 seconds
+~~~
+
+
+vector-try-wait is faster than the global order
+
+## 8
+
+_Now let’s look at vector-avoid-hold-and-wait.c. What is the main problem with this approach?_ 
+
+only one lock at a time is allowed. Therefore a parallelism doesn't work either (-p)
+
+_How does its performance compare to the other versions, when running both with -p and without it?_
+
+it will be worse than others because it can't perform in parallel
+
+## 9
+
+_Finally, let’s look at vector-nolock.c. This version doesn’t use locks at all; does it provide the exact same semantics as the other versions? Why or why not?_
 
