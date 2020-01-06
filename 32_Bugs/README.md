@@ -133,3 +133,9 @@ for (i = 0; i < VECTOR_SIZE; i++) {
     fetch_and_add(&v_dst->values[i], v_src->values[i]);
 }
 ~~~
+
+## 10
+
+_Now compare its performance to the other versions, both when threads are working on the same two vectors (no -p) and when each thread is working on separate vectors (-p). How does this no-lock version perform?_
+
+it takes longer than the other methods
