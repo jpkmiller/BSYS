@@ -148,7 +148,7 @@ Final statistics:
 ## 3
 #### 3.1
 ~~~
-e3> python '.\scheduler 1.py' -p RR-q 1 -j 3 -s 100
+python '.\scheduler 1.py' -p RR-q 1 -j 3 -s 100
 ARG policy RR-q 1 -j 3 -s 100
 ARG jobs 3
 ARG maxlen 10
