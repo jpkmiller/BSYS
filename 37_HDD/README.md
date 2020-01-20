@@ -64,10 +64,56 @@ SATF outperforms SSTF; more generally, when is SATF better than SSTF?
 
 ~~~
 Same results as with -p SATF (Shortest Access Time First) which also orders the queue depending on seek time
+
+./disk.py -a 31,6 -c -p SATF -S 40 -R 1
+./disk.py -a 31,6 -c -p SSTF -S 40 -R 1
+
+SATF shorter than SSTF when seek time is shorter than rotation time
 ~~~
 
 ## 6
+
+Here is a request stream to try: -a 10,11,12,13. What goes poorly when it runs? Try adding track skew to address this problem (-o skew). Given the default seek rate, what should the skew be to maximize performance? What about for different seek rates (e.g., -S 2, -S 4)? In general, could you write a formula to figure out the skew?
+
+40 / 1 / (30 * 1) = 2
+
+_skew = track-distance(40) / seek-speed / (rotational-space-degrees(360 / 12) * rotation-speed)_
+
+~~~
+-S 2: 40 / 2 / 30 ≈ 1
+-S 4: 40 / 4 / 30 ≈ 1
+~~~
+
+~~~
+In order not to skew too many tracks one could use a different scheduler like SATF ;)
+~~~
+
+
 ## 7
+
+Specify a disk with different density per zone, e.g., -z 10,20,30, which specifies the angular difference between blocks on the outer, middle, and inner tracks. Run some random requests (e.g., -a -1 -A 5,-1,0, which specifies that random requests should be used via the -a -1 flag and that five requests ranging from 0 to the max be generated), and compute the seek, rotation, and transfer times. Use different random seeds. What is the bandwidth (in sectors per unit time) on the outer, middle, and inner tracks?
+
+~~~
+middle: 2/(339 + 260)       =
+outer:  3/(135 + 270 + 140) =
+~~~
+
+
 ## 8
+
+A scheduling window determines how many requests the disk can examine at once. Generate random workloads (e.g., -A 1000,-1,0, with different seeds) and see how long the SATF scheduler takes when the scheduling window is changed from 1 up to the number of requests. How big of a window is needed to maximize performance? Hint: use the -c flag and don’t turn on graphics (-G) to run these quickly. When the scheduling window is set to 1, does it matter which policy you are using?
+
+~~~
+python ./disk.py -a -1 -A 1000,-1,0 -p SATF -w 1 -c
+python ./disk.py -a -1 -A 1000,-1,0 -p SATF -w 10 -c
+python ./disk.py -a -1 -A 1000,-1,0 -p SATF -w 100 -c
+python ./disk.py -a -1 -A 1000,-1,0 -p SATF -w 200 -c
+
+It is logarithmic => the bigger the scheduling window is the better the scheduler performs till it reaches a minimum of ca. 35000 time units
+
+FIFO is not affected by the window because it takes the request one by one and handles it without changing the order
+
+~~~
+
 ## 9
 ## 10
