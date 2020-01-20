@@ -112,8 +112,21 @@ python ./disk.py -a -1 -A 1000,-1,0 -p SATF -w 200 -c
 It is logarithmic => the bigger the scheduling window is the better the scheduler performs till it reaches a minimum of ca. 35000 time units
 
 FIFO is not affected by the window because it takes the request one by one and handles it without changing the order
-
 ~~~
 
 ## 9
+Create a series of requests to starve a particular request, assuming an SATF policy. Given that sequence, how does it perform if you use a bounded SATF (BSATF) scheduling approach? In this approach, you specify the scheduling window (e.g., -w 4); the scheduler only moves onto the next window of requests when all requests in the current window have been serviced. Does this solve starvation? How does it perform, as compared to SATF? In general, how should a disk make this trade-off between performance and starvation avoidance?
+
+~~~
+python ./disk.py -a 12,7,8,9,10,11 -p SATF -c          // 7,8,9,10,11,12 Total: 555
+python ./disk.py -a 12,7,8,9,10,11 -p BSATF -w 4 -c    // 7,8,9,12,10,11 Total: 525
+~~~
+
 ## 10
+
+All the scheduling policies we have looked at thus far are greedy; they pick the next best option instead of looking for an optimal schedule. Can you find a set of requests in which greedy is not optimal?
+
+~~~
+python ./disk.py -a 9,20 -c            // 435
+python ./disk.py -a 9,20 -c -p SATF    // 465
+~~~
