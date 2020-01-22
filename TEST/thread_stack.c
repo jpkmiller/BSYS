@@ -5,6 +5,7 @@
 void *thread_routine(void *arg) {
 	int a;
 	printf("addr of thread stack: %p\n", &a);
+	return NULL;
 }
 
 int main(int argc, char **argv, char **envp) {
@@ -23,4 +24,6 @@ int main(int argc, char **argv, char **envp) {
 	for (int i = 0; i < max_threads; i++) {
 		pthread_join(p[i], NULL);
 	}
+
+	return 0;
 }
