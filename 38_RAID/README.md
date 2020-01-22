@@ -147,6 +147,7 @@ LOGICAL READ from addr:6059 size:4096
 
 ### RAID 5
 
+~~~
 D0  D1  D2  D3
 0   1   2   3
 4   5   6   7
@@ -169,15 +170,43 @@ D0  D1  D2  D3
 3   4   P1  5
 6   P2   7  8
 P3  9   10  11
-
+~~~
 
 ## 2
 
 Do the same as the first problem, but this time vary the chunk size with -C. How does chunk size change the mappings?
 
+bigger chunks lead to new mapping in all RAIDS
+
+### RAID 0
+
+~~~
+D0  D1  D2  D3
+0   2   4   6
+1   3   5   7
+8   10  12  14
+9   11  13  15
+~~~
+
+### RAID 5
+~~~
+LA:
+
+D0  D1  D2  D3
+0   2   4   P0
+1   3   5   P1
+6   8   P2  10
+7   9   P3  11
+~~~
+
+
 ## 3
 
 Do the same as above, but use the -r flag to reverse the nature of each problem.
+
+~~~
+python ./raid.py -L 0 -n 12 -s 0 -W seq -C 8k -r
+~~~
 
 ## 4
 
