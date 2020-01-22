@@ -212,9 +212,65 @@ python ./raid.py -L 0 -n 12 -s 0 -W seq -C 8k -r
 
 Now use the reverse flag but increase the size of each request wit the -S flag. Try specifying sizes of 8k, 12k, and 16k, while varying the RAID level. What happens to the underlying I/O pattern when the size of the request increases? Make sure to try this with the sequential workload too (-W sequential); for what request sizes are RAID-4 and RAID-5 much more I/O efficient?
 
+### RAID 0
+
+python raid.py -L 0 -n 5 -W seq -S 4k -r -s 1
+
+~~~
+LOGICAL OPERATION is 0
+  read  [disk 0, offset 0]
+
+LOGICAL OPERATION is 1
+  read  [disk 1, offset 0]
+
+LOGICAL OPERATION is 2
+  read  [disk 2, offset 0]
+
+LOGICAL OPERATION is 3
+  read  [disk 3, offset 0]
+
+LOGICAL OPERATION is 4
+  read  [disk 0, offset 1]
+~~~
+
+
+python raid.py -L 0 -n 5 -W seq -S 8k -r -s 1
+
+~~~
+LOGICAL OPERATION is addr: 0, size:8192
+  read  [disk 0, offset 0]
+  read  [disk 1, offset 0]
+
+LOGICAL OPERATION is addr: 2
+  read  [disk 2, offset 0]
+  read  [disk 3, offset 0]
+
+LOGICAL OPERATION is addr: 4
+  read  [disk 0, offset 1]
+  read  [disk 1, offset 1]
+
+LOGICAL OPERATION is addr: 6
+  read  [disk 2, offset 1]
+  read  [disk 3, offset 1]
+
+LOGICAL OPERATION is addr: 8
+  read  [disk 0, offset 2]
+  read  [disk 1, offset 2]
+~~~
+
 ## 5
 
 Use the timing mode of the simulator (-t) to estimate the performance of 100 random reads to the RAID, while varying the RAID levels, using 4 disks.
+
+Estimate how long the workload should take to complete.
+- Roughly how many requests should each disk receive?
+- How many requests are random, how many sequential?
+
+### RAID 0
+
+~~~
+
+~~~
 
 ## 6
 
