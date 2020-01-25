@@ -30,6 +30,9 @@ top // show all processes
 
 ### Files
 ~~~c
+mv <src> <newname> // rename a file
+rm <src> // remove a file
+rmdir <location> // remove a directory
 stat // show stats of a file
 ln <src> <dst> // hardlink a file/dir to another
 ln -s <src> <dst> // softlink a file/dir to another
