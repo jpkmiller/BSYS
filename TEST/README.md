@@ -19,5 +19,7 @@ Program Execution:
 
 > Version 2.11 of glibc added a nonstandard function, execvpe(file, argv, envp). This function is like execvp(), but instead of taking the environment for the new program from environ, the caller specifies the new environment via the envp argument (like execve() and execle()).
 
+![](DF834608-8608-4717-A32A-B7A86CE01C7E.jpeg) https://github.com/shihyu/Linux_Programming/blob/master/books/The%20Linux%20Programming%20Interface%20-%20A%20Linux%20and%20UNIX%20System%20Programming%20Handbook.pdf
+
 
 from p. 567 from the Linux Programming Interface :D
