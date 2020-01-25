@@ -68,3 +68,14 @@ from p. 567 from the Linux Programming Interface
 - 255 (0xff)  Local APIC spurious interrupt (generated if the CPU masks an interrupt while the hardware device raises it)
 
 https://www.oreilly.com/library/view/understanding-the-linux/0596005652/ch04s06.html
+
+### inodes
+
+Every directory contains the special name "." (dot), a shorthand name that is a map to the inode of the directory itself. That counts as a link to the directory. The smallest link count of any Unix directory is therefore two: count one link for the unique name-inode map in the parent directory that gives the directory its Unix "name", and count another link for the "." (dot) map in the directory itself. Every directory must have these two names.
+
+~~~c
+cd .. // .. is the inode of the parent directory
+cd . // . is the inode of the current directory
+~~~
+
+http://teaching.idallen.com/dat2330/04f/notes/links_and_inodes.html
