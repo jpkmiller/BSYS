@@ -37,3 +37,5 @@ from p. 567 from the Linux Programming Interface :D
 - 251–253 (0xfb-0xfd) Interprocessor interrupts (see the section "Interprocessor Interrupt Handling" later in this chapter)
 - 254 (0xfe)  Local APIC error interrupt (generated when the local APIC detects an erroneous condition)
 - 255 (0xff)  Local APIC spurious interrupt (generated if the CPU masks an interrupt while the hardware device raises it)
+
+https://www.oreilly.com/library/view/understanding-the-linux/0596005652/ch04s06.html
