@@ -9,6 +9,14 @@ objdump -d <src> // disassemble the code of an object file
 strace // trace program and which functions it calls in its execution
 ~~~
 
+### Search
+~~~c
+find <location> <query> // search something at directory <location>
+find / <query> // search everywhere
+grep <query> <location> // search in a file
+grep <query> <location> | wc -l // count words in a file
+~~~
+
 ### Manual
 ~~~c
 man -k <query> // search for an entry in the manual page
