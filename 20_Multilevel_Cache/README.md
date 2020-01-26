@@ -1,14 +1,16 @@
-No. 1
+## 1
 
+~~~
 You only need one Register, because all pointers to the page tables of a process are stored in a single directory. 
 It doesn't matter if there are 1, 2 or n level page tables. 
 Because only the reference to the first Page Table has to be saved.
-
+~~~
 
 ------------------------------------------------------------------------------------------------------------------
 
-No. 2
+## 2
 
+~~~
 ARG seed 0
 ARG allocated 64
 ARG num 10
@@ -177,14 +179,16 @@ Virtual Address 3e99: 01111|10100|11001
 	108 (offset 15 bit PDE) => d6 -> 1|1010110 => 86
 	86 (offset 20 bit PTE) => ca -> 1|1001010 => 74
 	74 (offset 25 bit) => 1e
+~~~
 
 ------------------------------------------------------------------------------------------------------------------
 
-No. 3
+## 3
 
+~~~
 In this simulation the addresses were spread accross the entire address space. That doesn't fit into the spatial and temporal localty of the Cache.
 Assuming real processes the accessed virtual addresses are likely to be next to each other. If a Cache Miss occurs it will take more time to access the page that has to be loaded into the Cache.
 First of all the Page Table has to be accessed by extracting the index of the PDE from the VPN of the virtual address. 
 Now the Page in which the PTEs are stored has to be accessed by extracting the index of the PTE from the VPN.
 This Address is then loaded into the TLB Cache. The number of Hits and Misses don't depend on this approach of reducing the size of Pagetables. It may be slower, because of more memory accesses when having a TLB Miss.
-
+~~~
