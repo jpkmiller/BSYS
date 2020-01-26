@@ -40,8 +40,10 @@ void rwlock_release_readlock(rwlock_t *rw) {
 }
 
 void rwlock_acquire_writelock(rwlock_t *rw) {
+	sem_wait(&rw->lock);
 	sem_wait(&rw->readlock);
 	sem_wait(&rw->writelock);
+	sem_post(&rw->lock);
 }
 
 void rwlock_release_writelock(rwlock_t *rw) {
@@ -65,9 +67,11 @@ void *reader(void *arg) {
 }
 
 void *writer(void *arg) {
+	int local;
 	for (int i = 0; i < __WRITE_MAX; i++) {
                 rwlock_acquire_writelock(&mutex);
-		printf("writing %d -> %lld\n", writes++, (long long int) arg);
+		local = writes++;
+		printf("writing %d -> %lld\n", local, (long long int) arg);
                 rwlock_release_writelock(&mutex);
         }
 	printf("finished writing %d -> %lld\n", writes, (long long int) arg);
