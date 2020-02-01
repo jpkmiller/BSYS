@@ -1,6 +1,9 @@
-No. 1
+# 9 Lottery Scheduling
 
-PS C:\Users\Josef\OneDrive - bwedu\Wichtig\HTWG\3. Semester\Betriebssysteme\BSYS\09_Lottery> python .\lottery-1.py -j 3 -s 1
+## 1
+
+~~~
+python .\lottery-1.py -j 3 -s 1
 ARG jlist
 ARG jobs 3
 ARG maxlen 10
@@ -12,8 +15,9 @@ Here is the job list, with the run time of each job:
   Job 0 ( length = 1, tickets = 84 )
   Job 1 ( length = 7, tickets = 25 )
   Job 2 ( length = 4, tickets = 44 )
+~~~
 
-
+~~~
 Here is the set of random numbers you will need (at most):
 Random 651593 % 152 = 121 -> 2
 Random 788724 % 152 = 148 -> 2
@@ -30,9 +34,10 @@ Random 445387
 Random 721540
 Random 228762
 Random 945271
+~~~
 
-
-PS C:\Users\Josef\OneDrive - bwedu\Wichtig\HTWG\3. Semester\Betriebssysteme\BSYS\09_Lottery> python .\lottery-1.py -j 3 -s 2
+~~~
+python .\lottery-1.py -j 3 -s 2
 ARG jlist
 ARG jobs 3
 ARG maxlen 10
@@ -44,8 +49,9 @@ Here is the job list, with the run time of each job:
   Job 0 ( length = 9, tickets = 94 )
   Job 1 ( length = 8, tickets = 73 )
   Job 2 ( length = 6, tickets = 30 )
+~~~
 
-
+~~~
 Here is the set of random numbers you will need (at most):
 Random 605944 % 197 = 169 -> 2
 Random 606802 % 197 = 42 -> 0
@@ -72,9 +78,10 @@ Random 236123 -> 1
 Random 23858 -> 1
 JOB 1 is done
 Random 325143 -> 2
+~~~
 
-
-PS C:\Users\Josef\OneDrive - bwedu\Wichtig\HTWG\3. Semester\Betriebssysteme\BSYS\09_Lottery> python .\lottery-1.py -j 3 -s 3
+~~~
+python .\lottery-1.py -j 3 -s 3
 ARG jlist
 ARG jobs 3
 ARG maxlen 10
@@ -86,8 +93,9 @@ Here is the job list, with the run time of each job:
   Job 0 ( length = 2, tickets = 54 )
   Job 1 ( length = 3, tickets = 60 )
   Job 2 ( length = 6, tickets = 6 )
+~~~
 
-
+~~~
 Here is the set of random numbers you will need (at most):
 Random 13168 % 120 = 88 -> 1
 Random 837469 % 120 = 109 -> 1
@@ -103,16 +111,18 @@ Random 476353
 Random 639068
 Random 150616
 Random 634861
+~~~
 
---------------------------------------------------
-No. 2
+## 2
 
+~~~
 JOB 1 will run almost finish all its jobs before JOB 0 had run yet, only in a few cases
 It's going to be very unfair for jobs with only a few tickets
+~~~
 
---------------------------------------------------
-No. 3
+## 3
 
+~~~
 192/200 = 0,96
 196/200 = 0,98
 190/200 = 0,95
@@ -121,9 +131,11 @@ No. 3
 181/200 = 0,905
 
 => 0,961
+~~~
 
---------------------------------------------------
-No. 4
+## 4
+
+~~~
 -q 10
 150/200 = 0,75
 160/200 = 0,8
@@ -138,4 +150,4 @@ No. 4
 150/200 = 0,75
 150/200 = 0,75
 100/200 = 0,5
-
+~~~
