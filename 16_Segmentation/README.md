@@ -1,4 +1,6 @@
-jo391mue@ct-bsys-ws19-3:~/Documents/BSYS/16_Segmentation$ python ./segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -s 0
+# 1
+~~~c
+python ./segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -s 0
 ARG seed 0
 ARG address space size 128
 ARG phys mem size 512
@@ -57,11 +59,12 @@ Answer (seed 2)
   VA  3: 0x0000000a (decimal:   10) --> 10 physical address in SEG0
   VA  4: 0x0000006a (decimal:  106) --> SIGSEGV
 
+~~~
 
----------------------------------------------------------------------
 
-No. 2
+# 2
 
+~~~c
 19 (highest) SEG0
 108 (lowest) SEG1
 
@@ -69,11 +72,11 @@ No. 2
 107 (highest)
 
 python ./segmentation.py -a 128 -p 512 -b 0 -l 20 -B 512 -L 20 -A 107,20
+~~~
 
----------------------------------------------------------------------
+# 3
 
-No. 3
-
+~~~c
 python ./segmentation.py -a 16 -p 128 -A 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 --b0 0 --l0 2 --b1 16 --l1 2 -c
 ARG seed 0
 ARG address space size 16
@@ -104,3 +107,4 @@ Virtual Address Trace
   VA 13: 0x0000000d (decimal:   13) --> SEGMENTATION VIOLATION (SEG1)
   VA 14: 0x0000000e (decimal:   14) --> VALID in SEG1: 0x0000000e (decimal:   14)
   VA 15: 0x0000000f (decimal:   15) --> VALID in SEG1: 0x0000000f (decimal:   15)
+~~~
