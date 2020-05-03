@@ -1,4 +1,5 @@
-jo391mue@ct-bsys-ws19-3:~/Documents/BSYS/17_Freespace$ python malloc.py -n 10 -H 0 -p BEST -s 0
+# 1
+python malloc.py -n 10 -H 0 -p BEST -s 0
 seed 0
 size 100
 baseAddr 1000
@@ -78,9 +79,8 @@ Free List [Size 4]: [address: 1002 sz: 1] [address: 1003 sz: 5] [address: 1015 s
 
 The free list is victim of external fragmentation. There are many small free segments that aren't coalsced
 
--------------------------------------------------------------------------------------------------------------
-
-No. 2 WORST
+# 2
+WORST
 
 ptr[0] = Alloc(3)  returned 1000
 Free List [Size 1]: [address: 1003 sz: 97]
@@ -115,9 +115,8 @@ Free List [Size 5]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1008 s
 There is more fragmentation because the allocator searches for the biggest chunk of memory. The difference is that there are more chunks with more memory than BEST fit. 
 In summary: more ext. fragmentation with bigger segments
 
--------------------------------------------------------------------------------------------------------------
-
-No. 3 FIRST
+# 3 
+FIRST
 
 ptr[0] = Alloc(3)  returned 1000
 Free List [Size 1]: [address: 1003 sz: 97]
@@ -151,10 +150,7 @@ Free List [Size 1]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1015 s
 
 The allocator doesn't have to go through the whole list but just searches for the first fitting free segment
 
-
--------------------------------------------------------------------------------------------------------------
-
-No. 4
+# 4
 
 When using ADDRSORT neither the WORST nor the BEST fit do perform differently than using SIZESORT+-, because the strategy of both allocations are to search for the one the chunk with the least waste at the end respectively the biggest chunk.
 This should result in bigger chunks of free memory.
