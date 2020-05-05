@@ -2,6 +2,7 @@
 
 ## 1
 
+_Compute the solutions for simulations with 3 jobs and randm seeds of 1, 2, and 3._
 ~~~
 python .\lottery-1.py -j 3 -s 1
 ARG jlist
@@ -115,12 +116,17 @@ Random 634861
 
 ## 2
 
+_Now run with two specific jobs: each of length 10, but one (job 0) with just 1 ticket and the other (job 1) with 100 (e.g., -l 10:1,10:100). What happens when the number of tickets is so imbalanced? Will
+job 0 ever run before job 1 completes? How often? In general, what does such a ticket imbalance do to the behavior of lottery scheduling?_
+
 ~~~
 JOB 1 will run almost finish all its jobs before JOB 0 had run yet, only in a few cases
 It's going to be very unfair for jobs with only a few tickets
 ~~~
 
 ## 3
+
+_When running with two jobs of length 100 and equal ticket alloca- tions of 100 (-l 100:100,100:100), how unfair is the scheduler? Run with some different random seeds to determine the (probabilis- tic) answer; let unfairness be determined by how much earlier one job finishes than the other._
 
 ~~~
 192/200 = 0,96
@@ -134,6 +140,8 @@ It's going to be very unfair for jobs with only a few tickets
 ~~~
 
 ## 4
+
+_How does your answer to the previous question change as the quantum size (-q) gets larger?_
 
 ~~~
 -q 10
