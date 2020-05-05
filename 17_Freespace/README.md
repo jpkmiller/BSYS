@@ -1,4 +1,8 @@
-# 1
+# 17 Free-Space Management
+
+[Chapter 17](http://pages.cs.wisc.edu/~remzi/OSTEP/vm-freespace.pdf)
+
+## 1
 
 _First run with the flags -n 10 -H 0 -p BEST -s 0 to generate a few random allocations and frees. Can you predict what al- loc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?_
 
@@ -86,7 +90,7 @@ Free List [Size 4]: [address: 1002 sz: 1] [address: 1003 sz: 5] [address: 1015 s
 The free list is victim of external fragmentation. There are many small free segments that aren't coalsced
 ~~~
 
-# 2
+## 2
 
 _ How are the results different when using a WORST fit policy to search the free list (-p WORST)? What changes?_
 WORST
@@ -128,7 +132,7 @@ In summary: more ext. fragmentation with bigger segments
 ~~~
 
 
-# 3
+## 3
 
 _ What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?_
 FIRST
@@ -168,7 +172,7 @@ Free List [Size 1]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1015 s
 The allocator doesn't have to go through the whole list but just searches for the first fitting free segment
 ~~~
 
-# 4
+## 4
 _For the above questions, how the list is kept ordered can affect the time it takes to find a free location for some of the policies. Use the different free list orderings (-l ADDRSORT, -l SIZESORT+, -l SIZESORT-) to see how the policies and the list orderings in- teract._
 ~~~
 When using ADDRSORT neither the WORST nor the BEST fit do perform differently than using SIZESORT+-, because the strategy of both allocations are to search for the one the chunk with the least waste at the end respectively the biggest chunk.
