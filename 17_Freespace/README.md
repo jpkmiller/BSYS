@@ -1,5 +1,9 @@
 # 1
-~~~c 
+
+_First run with the flags-n10-H0-pBEST-s0to gener- ate a few random allocations and frees. Can you predict what al- loc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?_
+
+BEST
+~~~
 python malloc.py -n 10 -H 0 -p BEST -s 0
 seed 0
 size 100
@@ -83,6 +87,8 @@ The free list is victim of external fragmentation. There are many small free seg
 ~~~
 
 # 2
+
+_ How are the results different when using a WORST fit policy to search the free list (-p WORST)? What changes?_
 WORST
 
 ~~~
@@ -122,7 +128,9 @@ In summary: more ext. fragmentation with bigger segments
 ~~~
 
 
-# 3 
+# 3
+
+_ What about when using FIRST fit (-p FIRST)? What speeds up when you use first fit?_
 FIRST
 
 ~~~
@@ -159,8 +167,9 @@ Free List [Size 1]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1015 s
 ~~~
 The allocator doesn't have to go through the whole list but just searches for the first fitting free segment
 ~~~
-# 4
 
+# 4
+_ For the above questions, how the list is kept ordered can affect the time it takes to find a free location for some of the policies. Use the different free list orderings (-l ADDRSORT, -l SIZESORT+, -l SIZESORT-) to see how the policies and the list orderings in- teract._
 ~~~
 When using ADDRSORT neither the WORST nor the BEST fit do perform differently than using SIZESORT+-, because the strategy of both allocations are to search for the one the chunk with the least waste at the end respectively the biggest chunk.
 This should result in bigger chunks of free memory.
