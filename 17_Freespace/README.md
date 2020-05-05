@@ -169,7 +169,7 @@ The allocator doesn't have to go through the whole list but just searches for th
 ~~~
 
 # 4
-_ For the above questions, how the list is kept ordered can affect the time it takes to find a free location for some of the policies. Use the different free list orderings (-l ADDRSORT, -l SIZESORT+, -l SIZESORT-) to see how the policies and the list orderings in- teract._
+_For the above questions, how the list is kept ordered can affect the time it takes to find a free location for some of the policies. Use the different free list orderings (-l ADDRSORT, -l SIZESORT+, -l SIZESORT-) to see how the policies and the list orderings in- teract._
 ~~~
 When using ADDRSORT neither the WORST nor the BEST fit do perform differently than using SIZESORT+-, because the strategy of both allocations are to search for the one the chunk with the least waste at the end respectively the biggest chunk.
 This should result in bigger chunks of free memory.
