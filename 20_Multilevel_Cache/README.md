@@ -1,4 +1,11 @@
+
+# 20 Paging: Smaller Tables
+
+[Chapter 20](http://pages.cs.wisc.edu/~remzi/OSTEP/vm-smalltables.pdf)
+
 ## 1
+
+_With a linear page table, you need a single register to locate the page table, assuming that hardware does the lookup upon a TLB miss. How many registers do you need to locate a two-level page table? A three-level table?_
 
 ~~~
 You only need one Register, because all pointers to the page tables of a process are stored in a single directory. 
@@ -9,6 +16,8 @@ Because only the reference to the first Page Table has to be saved.
 ------------------------------------------------------------------------------------------------------------------
 
 ## 2
+
+_Use the simulator to perform translations given random seeds 0, 1, and 2, and check your answers using the -c flag. How many memory references are needed to perform each lookup?_
 
 ~~~
 ARG seed 0
@@ -181,9 +190,9 @@ Virtual Address 3e99: 01111|10100|11001
 	74 (offset 25 bit) => 1e
 ~~~
 
-------------------------------------------------------------------------------------------------------------------
-
 ## 3
+
+_Given your understanding of how cache memory works, how do you think memory references to the page table will behave in the cache? Will they lead to lots of cache hits (and thus fast accesses?) Or lots of misses (and thus slow accesses)?_
 
 ~~~
 In this simulation the addresses were spread accross the entire address space. That doesn't fit into the spatial and temporal localty of the Cache.
