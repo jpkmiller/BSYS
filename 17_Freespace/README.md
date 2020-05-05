@@ -1,4 +1,5 @@
 # 1
+~~~c 
 python malloc.py -n 10 -H 0 -p BEST -s 0
 seed 0
 size 100
@@ -76,12 +77,15 @@ Free List [Size 4]: [address: 1002 sz: 1] [address: 1003 sz: 5] [address: 1008 s
 
 ptr[5] = Alloc(7)  returned 1008
 Free List [Size 4]: [address: 1002 sz: 1] [address: 1003 sz: 5] [address: 1015 sz: 1] [address: 1016 sz: 84]
-
+~~~
+~~~
 The free list is victim of external fragmentation. There are many small free segments that aren't coalsced
+~~~
 
 # 2
 WORST
 
+~~~
 ptr[0] = Alloc(3)  returned 1000
 Free List [Size 1]: [address: 1003 sz: 97]
 
@@ -111,13 +115,17 @@ Free List [Size 5]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1008 s
 
 ptr[5] = Alloc(7)  returned 1026
 Free List [Size 5]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1008 sz: 8] [address: 1016 sz: 8] [address: 1033 sz: 67]
-
+~~~
+~~~
 There is more fragmentation because the allocator searches for the biggest chunk of memory. The difference is that there are more chunks with more memory than BEST fit. 
 In summary: more ext. fragmentation with bigger segments
+~~~
+
 
 # 3 
 FIRST
 
+~~~
 ptr[0] = Alloc(3)  returned 1000
 Free List [Size 1]: [address: 1003 sz: 97]
 
@@ -147,14 +155,16 @@ Free List [Size 1]: [address: 1002 sz: 1] [address: 1003 sz: 5] [address: 1008 s
 
 ptr[5] = Alloc(7)  returned 1008
 Free List [Size 1]: [address: 1000 sz: 3] [address: 1003 sz: 5] [address: 1015 sz: 1] [address: 1016 sz: 84]
-
+~~~
+~~~
 The allocator doesn't have to go through the whole list but just searches for the first fitting free segment
-
+~~~
 # 4
 
+~~~
 When using ADDRSORT neither the WORST nor the BEST fit do perform differently than using SIZESORT+-, because the strategy of both allocations are to search for the one the chunk with the least waste at the end respectively the biggest chunk.
 This should result in bigger chunks of free memory.
 
 When using SIZESORT- FIRST fit has the best performance, because the biggest chunks are at the beginning of the list. External fragmentation therefore increases. 
 Opposite results are achieved when SIZESORT+ is used. The FIRST fit has with big allocations worst case because the bigger chunks are at the end of the list
-
+~~~
