@@ -1,6 +1,6 @@
 # 1
 
-_First run with the flags-n10-H0-pBEST-s0to gener- ate a few random allocations and frees. Can you predict what al- loc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?_
+_First run with the flags -n 10 -H 0 -p BEST -s 0 to generate a few random allocations and frees. Can you predict what al- loc()/free() will return? Can you guess the state of the free list after each request? What do you notice about the free list over time?_
 
 BEST
 ~~~
