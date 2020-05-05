@@ -1,5 +1,7 @@
 # 22 Paging Policy
 
+[Chapter 22](http://pages.cs.wisc.edu/~remzi/OSTEP/vm-beyondphys-policy.pdf)
+
 ## 1
 ~~~
 python paging-policy.py -s 0 -n 10
