@@ -156,7 +156,7 @@ page 127: 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f 7f df 7f 7f 7f 7f 7f 7f 7
 PDBR: 108  (decimal) [This means the page directory is held in this page]
 
 Virtual Address 611c: 11000|01000|11100
-	108 (offset 24 bit PDE) => a1 -> 1|0100001 => 33
+	108 (offset 24 bit PDE) => a1 -> 1|0100001 (cut off first 7 bits [128 pages])=> 33
 	33 (offset 8 bit PTE) => b5  -> 1|0110101 => 53
 	53 (offset 28 bit) => 08
 Virtual Address 3da8: 01111|01101|01000
