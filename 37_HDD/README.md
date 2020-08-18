@@ -17,7 +17,7 @@ Compute the seek, rotation, and transfer times for the following sets of request
 You have to calculate n - 1 rotations that have to be done, then add a quarter of a rotation which is 15 units and then add another 30 for the read
 6 -> 0 = 150 + 15 + 30
 6 -> 6 = 330 + 15 + 30
-6 -> 30 = 375 (?)
+6 -> 30 = [330 (rotation from 30 to 30 ) - 80 (seek)] + 15 + 30 + 80 seek
 6 -> 7,30,8 = [15 + 30] + [300 (bc 10 rotations going from 7 to 30) + 30] + [390 (bc 13 rotations going from 30 to 8) + 30]
 6 -> 10,11,12,13 = [90 + 15 + 30] + [30] + [360 + 30] + [30]
 ~~~
