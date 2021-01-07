@@ -4,10 +4,13 @@
 
 ### Programming, Compiling & Execution
 ~~~c
-gcc -c <src>.c -o <dst> // results in an object file
-objdump -d <src> // disassemble the code of an object file 
+gcc -c path/to/file -o path/to/outputfile // results in an object file
+objdump -d path/to/file // disassemble the code of an object file 
 strace // trace program and which functions it calls in its execution
+gdb path/to/file
+valgrind path/to/file
 ~~~
+
 
 ### Search
 ~~~c
